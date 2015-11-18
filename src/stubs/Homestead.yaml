@@ -12,6 +12,10 @@ keys:
 folders:
     - map: ~/Code
       to: /home/vagrant/Code
+      type: "nfs"
+
+supervisor:
+    - /home/vagrant/Code
 
 sites:
     - map: homestead.app

@@ -139,6 +139,15 @@ class Homestead
         s.path = scriptDir + "/clear-variables.sh"
     end
 
+    if settings.has_key?("supervisor")
+        settings["supervisor"].each do |p|
+          config.vm.provision "shell" do |s|
+            s.path = scriptDir + "/supervisor.sh"
+            s.args = [p]
+          end
+        end
+    end
+
     if settings.has_key?("variables")
       settings["variables"].each do |var|
         config.vm.provision "shell" do |s|
