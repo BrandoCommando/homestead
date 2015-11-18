@@ -1,7 +1,10 @@
-<?php namespace Laravel\Homestead;
+<?php
+
+namespace Laravel\Homestead;
 
 use Symfony\Component\Process\Process;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -14,8 +17,10 @@ class EditCommand extends Command
      */
     protected function configure()
     {
-        $this->setName('edit')
-                  ->setDescription('Edit the Homestead.yaml file');
+        $this
+            ->setName('edit')
+            ->setDescription('Edit a Homestead file')
+            ->addArgument('file', InputArgument::OPTIONAL, 'The file you wish to edit.');
     }
 
     /**
@@ -27,7 +32,13 @@ class EditCommand extends Command
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $command = $this->executable().' '.homestead_path().'/Homestead.yaml';
+        $file = 'Homestead.yaml';
+
+        if ($input->getArgument('file') === 'aliases') {
+            $file = 'aliases';
+        }
+
+        $command = $this->executable().' '.homestead_path().'/'.$file;
 
         $process = new Process($command, realpath(__DIR__.'/../'), array_merge($_SERVER, $_ENV), null, null);
 
